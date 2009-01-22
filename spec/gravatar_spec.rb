@@ -22,6 +22,9 @@ context "gravatar_url with a custom default URL" do
 end
 
 context "gravatar_url with default settings" do
+  setup do
+    @url = gravatar_url("somewhere")
+  end
   
   specify "should have a nil default URL" do
     DEFAULT_OPTIONS[:default].should be_nil
