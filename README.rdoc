@@ -48,5 +48,5 @@ The following people have also written gravatar-related Ruby libraries:
 
 == TODO
 
-* Get full spec coverage
+* Add specs for ssl support
 * Finish rdoc documentation
