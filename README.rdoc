@@ -12,12 +12,12 @@ set up an avatar for each site that they post on.
 == Installation
 
   cd ~/myapp
-  ruby script/plugin install svn://rubyforge.org//var/svn/gravatarplugin/plugins/gravatar
+  ruby script/plugin install git://github.com/woods/gravatar-plugin.git
 
 or, if you're using piston[http://piston.rubyforge.org] (worth it!):
 
   cd ~/myapp/vendor/plugins
-  piston import svn://rubyforge.org//var/svn/gravatarplugin/plugins/gravatar
+  piston import git://github.com/woods/gravatar-plugin.git
 
 == Example
 
