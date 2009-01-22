@@ -22,8 +22,9 @@ module GravatarHelper
     # exclude gravatars that may be out of character for your site.
     :rating => 'PG',
     
-    # The alt text to use in the img tag for the gravatar.
-    # Since it's a decorational picture, the alt text should be empty according to the XHTML specs.
+    # The alt text to use in the img tag for the gravatar.  Since it's a
+    # decorational picture, the alt text should be empty according to the
+    # XHTML specs.
     :alt => '',
     
     # The class to assign to the img tag for the gravatar.
