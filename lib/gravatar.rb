@@ -2,7 +2,6 @@ require 'digest/md5'
 require 'cgi'
 
 module GravatarHelper
-
   # These are the options that control the default behavior of the public
   # methods. They can be overridden during the actual call to the helper,
   # or you can set them in your environment.rb as such:
@@ -44,23 +43,22 @@ module GravatarHelper
       gravatar(user.email, options)
     end
 
-    # Return the HTML img tag for the given email address's gravatar.
+    # Return the HTML img tag for the given email address's gravatar. All unknown options
+    # will be passed to the html tag
     def gravatar(email, options={})
       src = h(gravatar_url(email, options))
       options = DEFAULT_OPTIONS.merge(options)
-      [:class, :alt, :size].each { |opt| options[opt] = h(options[opt]) }
-      "<img class=\"#{options[:class]}\" alt=\"#{options[:alt]}\" width=\"#{options[:size]}\" height=\"#{options[:size]}\" src=\"#{src}\" />"      
+      html_options = []
+      html_keys = options.keys - [:size, :ssl, :default, :rating]
+      html_keys.each {|k| html_options << "#{k}=\"#{h options[k]}\"" unless options[k].blank?}
+      "<img #{html_options.join(" ")} height=\"#{options[:size]}\" src=\"#{src}\" />"
     end
     
     # Returns the base Gravatar URL for the given email hash. If ssl evaluates to true,
     # a secure URL will be used instead. This is required when the gravatar is to be 
     # displayed on a HTTPS site.
     def gravatar_api_url(hash, ssl=false)
-      if ssl
-        "https://secure.gravatar.com/avatar/#{hash}"
-      else
-        "http://www.gravatar.com/avatar/#{hash}"
-      end
+      "#{ssl ? "https://secure": "http://www"}.gravatar.com/avatar/#{hash}"
     end
 
     # Return the gravatar URL for the given email address.
@@ -68,18 +66,13 @@ module GravatarHelper
       email_hash = Digest::MD5.hexdigest(email)
       options = DEFAULT_OPTIONS.merge(options)
       options[:default] = CGI::escape(options[:default]) unless options[:default].nil?
-      returning gravatar_api_url(email_hash, options.delete(:ssl)) do |url|
-        opts = []
-        [:rating, :size, :default].each do |opt|
-          unless options[opt].nil?
-            value = h(options[opt])
-            opts << [opt, value].join('=')
-          end
+      returning gravatar_api_url(email_hash, options[:ssl]) do |url|
+        opts = [:rating, :size, :default].map do |k|
+          "#{k}=#{h options[k]}" unless options[k].blank?
         end
         url << "?#{opts.join('&')}" unless opts.empty?
       end
     end
-
   end
   
 end
